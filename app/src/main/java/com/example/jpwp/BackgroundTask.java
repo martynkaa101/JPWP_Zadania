@@ -34,7 +34,7 @@ public class BackgroundTask extends AsyncTask<String, String, String> {
 
 
         String type = strings[0];
-        String loginURL = "https://10.0.2.2:8080/login.php";
+        String loginURL = "http://10.0.2.2:8080/JPWP/login.php";
         String regURL = "http://10.0.2.2:8080/JPWP/registration.php";
 
         if (type.equals("registration")) {
@@ -59,6 +59,45 @@ public class BackgroundTask extends AsyncTask<String, String, String> {
                             "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") +
                             "&" + URLEncoder.encode("password1", "UTF-8") + "=" + URLEncoder.encode(password1, "UTF-8") +
                             "&" + URLEncoder.encode("password2", "UTF-8") + "=" + URLEncoder.encode(password2, "UTF-8");
+                    bufferedWriter.write(insert_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "ISO-8859-1");
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String line = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+
+                    }
+                    result = stringBuilder.toString();
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else if (type.equals("login")) {
+            String email = strings[1];
+            String password = strings[2];
+
+            try {
+                URL url = new URL(loginURL);
+                try {
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+                    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                    String insert_data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") +
+                            "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                     bufferedWriter.write(insert_data);
                     bufferedWriter.flush();
                     bufferedWriter.close();
