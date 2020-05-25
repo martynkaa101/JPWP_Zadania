@@ -10,11 +10,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $email=$_POST["email"];
     $password1=$_POST["password1"];
     $password2=$_POST["password2"];
-    $name_regexp="/[a-żA-Ż\ ]{3,}/";
+    $name_regexp="/^[a-żA-Ż\ ]{3,}$/";
     $name_check = preg_match($name_regexp, $name);
-    $surname_regexp="/^\b[a-żA-Ż]+\b$/";
+    $surname_regexp="/^[a-żA-Ż\-]+$/";
     $surname_check = preg_match($surname_regexp, $surname);
-    $email_regexp="/[a-żA-Ż0-9\_\+-.]{3,}+@+[a-żA-Ż0-9\_\+-.]{2,}/";
+    $email_regexp="/^[a-żA-Ż0-9\_\+\-\.]+\@[a-żA-Ż0-9\_\+\-\.]+\.[a-zA-Z]{2,6}$/";
     $email_check = preg_match($email_regexp, $email);
     if($password1 == $password2){
         if(($name_check == true) && ($surname_check == true) && ($email_check == true)){
@@ -37,3 +37,4 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 }else{
 echo("error in request method");
 }
+?>
