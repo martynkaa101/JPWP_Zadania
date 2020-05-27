@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $password2=$_POST["password2"];
     $name_regexp="/^[a-żA-Ż\ ]{3,}$/";
     $name_check = preg_match($name_regexp, $name);
-    $surname_regexp="/^[a-żA-Ż\-]+$/";
+    $surname_regexp="/^[a-żA-Ż]+[a-żA-Ż\-]*$/";
     $surname_check = preg_match($surname_regexp, $surname);
     $email_regexp="/^[a-żA-Ż0-9\_\+\-\.]+\@[a-żA-Ż0-9\_\+\-\.]+\.[a-zA-Z]{2,6}$/";
     $email_check = preg_match($email_regexp, $email);
